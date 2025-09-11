@@ -7,6 +7,19 @@ import {AggregateLib} from "./AggregateLib.sol";
 library BaselineFilterLib {
     using AggregateLib for AuctionTypes.Trade[];
 
+    /** 
+    @dev Build per-pair baseline scores from the input solutions.
+    * - Only single-pair solutions (i.e. those whose aggregate has length 1) contribute
+    *   to the baseline, multi-pair solutions are ignored.
+    * - For each directed pair key, keeps the maximum aggregated score observed among
+    *   single-pair solutions.
+    * - If no single-pair solution exists for a pair, that pair does not appear in the result
+    *   (equivalent to a baseline score of 0 for filtering).
+    * @param solutions Candidate solutions.
+    * @return trimmed Array of baseline entries where:
+    *         - trimmed[i].key is the directed pair key (sell, buy)
+    *         - trimmed[i].score is the best single-pair aggregate score for that pair.
+    */
     function buildBaselines(
         AuctionTypes.Solution[] calldata solutions
     ) internal pure returns (AuctionTypes.PairScore[] memory trimmed) {
@@ -42,11 +55,22 @@ library BaselineFilterLib {
         for (uint256 i = 0; i < blen; ++i) trimmed[i] = tmp[i];
     }
 
-    function keepMask(
+    /**
+    @dev Returns a pass/fail flag for each input solution.
+    * For each solution:
+    *  - Aggregate trades per directed pair via AggregateLib.aggregatePairs().
+    *  - Single-pair: solutions always pass (true).
+    *  - Multi-pair: solutions pass iff every directed pair’s aggregate score is
+    *    >= that pair’s baseline score. Baselines are looked up, missing entries are treated as 0.
+    * @param solutions Candidate solutions.
+    * @param baselines Baseline entries {key, bestScore} from single-pair solutions.
+    * @return isKept Boolean flags indicating which solutions[i] pass the baseline filter.
+    */
+    function baselineFilter(
         AuctionTypes.Solution[] calldata solutions,
         AuctionTypes.PairScore[] memory baselines
-    ) internal pure returns (bool[] memory mask) {
-        mask = new bool[](solutions.length);
+    ) internal pure returns (bool[] memory isKept) {
+        isKept = new bool[](solutions.length);
 
         for (uint256 i = 0; i < solutions.length; ++i) {
             AuctionTypes.PairScore[] memory agg = solutions[i]
@@ -54,7 +78,7 @@ library BaselineFilterLib {
                 .aggregatePairs();
 
             if (agg.length == 1) {
-                mask[i] = true;
+                isKept[i] = true;
                 continue;
             }
 
@@ -68,7 +92,7 @@ library BaselineFilterLib {
                     break;
                 }
             }
-            mask[i] = ok;
+            isKept[i] = ok;
         }
     }
 }

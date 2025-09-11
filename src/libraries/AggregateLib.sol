@@ -50,7 +50,6 @@ library AggregateLib {
      * @param trades The trades to inspect.
      * @return keys Array of unique directed pair keys present in `trades`.
      */
-
     function uniquePairs(
         AuctionTypes.Trade[] calldata trades
     ) internal pure returns (bytes32[] memory keys) {
