@@ -35,18 +35,18 @@ library BaselineFilterLib {
             if (agg.length != 1) continue;
 
             bytes32 k = agg[0].key;
-            uint256 v = agg[0].score;
+            uint256 s = agg[0].score;
 
             bool found = false;
             for (uint256 j = 0; j < blen; ++j) {
                 if (tmp[j].key == k) {
-                    if (v > tmp[j].score) tmp[j].score = v;
+                    if (s > tmp[j].score) tmp[j].score = s;
                     found = true;
                     break;
                 }
             }
             if (!found) {
-                tmp[blen] = AuctionTypes.PairScore({key: k, score: v});
+                tmp[blen] = AuctionTypes.PairScore({key: k, score: s});
                 blen++;
             }
         }

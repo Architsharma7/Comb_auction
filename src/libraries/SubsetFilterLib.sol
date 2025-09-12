@@ -49,7 +49,7 @@ library SubsetFilterLib {
     }
 
     /**
-     * @dev Full greedy-selection of non-conflicting solutions from a candidate set
+     * @dev Full greedy-selection with fairness filtering
      * Sort by score and drop ineligible indices (isKept)
      * Greedy pick in that order subject to DirectedTokenPairs compatibility:
      * For each candidate, compute unique (sell,buy) keys
