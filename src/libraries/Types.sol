@@ -3,14 +3,14 @@ pragma solidity ^0.8.24;
 
 library AuctionTypes {
     struct Trade {
-        bytes32 id;
+        string id;
         address sellToken;
         address buyToken;
         uint256 score;
     }
 
     struct Solution {
-        bytes32 id;
+        string id;
         address solver;
         uint256 score;
         Trade[] trades;

@@ -1,5 +1,6 @@
 import argparse
-
+from dataclasses import asdict
+import json, pathlib
 from fetch import fetch_auctions, compute_split_solutions
 from mechanism import (
     FilterRankRewardMechanism,
@@ -10,6 +11,22 @@ from mechanism import (
     SubsetFilteringSelection,
     run_counter_factual_winners
 )
+
+def solution_to_jsonable(sol):
+    return {
+        "id": sol.id,                          
+        "solver": sol.solver,                  
+        "score": int(sol.score),
+        "trades": [
+            {
+                "id": t.id,                    
+                "sellToken": t.sell_token,     
+                "buyToken": t.buy_token,       
+                "score": int(t.score),
+            }
+            for t in sol.trades
+        ],
+    }
 
 def main():
     """Main function to run winner selection."""
@@ -84,8 +101,19 @@ def main():
         mechanism,
         remove_executed_orders=True
     )
+    winners = winners_single_auction[0]
     
-    print(f"Winners for auction index {auction_id}:", winners_single_auction[0])
+    print(f"Winners for auction index {auction_id}:", winners)
+    
+    payload = {
+    "solutions_batch":       [solution_to_jsonable(s) for s in solutions_batch[auction_id]],
+    "solutions_batch_split": [solution_to_jsonable(s) for s in solutions_batch_split[auction_id]],
+    "winners_python":        [solution_to_jsonable(s) for s in winners],
+    }
+    
+    out = pathlib.Path(f"auction_snapshot_{auction_id}.json")
+    out.write_text(json.dumps(payload, indent=2))
+    print("Wrote", out)
     
     
 if __name__ == "__main__":
