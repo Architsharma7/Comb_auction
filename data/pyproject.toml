@@ -13,4 +13,7 @@ dependencies = [
     "python-dotenv>=1.0.1",
     "requests>=2.32.3",
     "sqlalchemy>=2.0.39",
+    "eth-abi>=5.1.0",
+    "eth-utils>=4.1.0",
+    "eth-hash[pycryptodome]>=0.7.0",
 ]

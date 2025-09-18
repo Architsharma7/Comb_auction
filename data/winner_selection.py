@@ -11,6 +11,9 @@ from mechanism import (
     SubsetFilteringSelection,
     run_counter_factual_winners
 )
+from typing import List, Tuple
+from eth_abi import encode
+from eth_utils import keccak, to_checksum_address
 
 def solution_to_jsonable(sol):
     return {
@@ -27,6 +30,40 @@ def solution_to_jsonable(sol):
             for t in sol.trades
         ],
     }
+    
+def trade_to_abi_tuple(t) -> Tuple[str, str, str, int]:
+    # (string id, address sellToken, address buyToken, uint256 score)
+    return (
+        str(t.id),
+        to_checksum_address(t.sell_token),
+        to_checksum_address(t.buy_token),
+        int(t.score),
+    )
+
+def solution_to_abi_tuple(s) -> Tuple[str, str, int, List[Tuple[str, str, str, int]]]:
+    # (string id, address solver, uint256 score, (Trade[]) )
+    return (
+        str(s.id),
+        to_checksum_address(s.solver),
+        int(s.score),
+        [trade_to_abi_tuple(t) for t in s.trades],
+    )
+    
+_S_TRADE = "(string,address,address,uint256)"
+_S_SOLUTION = f"(string,address,uint256,{_S_TRADE}[])"
+_S_SOLUTION_ARR = f"{_S_SOLUTION}[]"
+    
+def encode_selectWinners_args(solutions) -> bytes:
+    """ABI-encode ONLY the argument: (Solution[])"""
+    abi_solutions = [solution_to_abi_tuple(s) for s in solutions]
+    return encode([_S_SOLUTION_ARR], [abi_solutions])
+
+
+def encode_winners_reference(winners) -> bytes:
+    """ABI-encode reference (Solution[]) for Foundry test comparison"""
+    abi_winners = [solution_to_abi_tuple(s) for s in winners]
+    return encode([_S_SOLUTION_ARR], [abi_winners])
+
 
 def main():
     """Main function to run winner selection."""
@@ -63,8 +100,16 @@ def main():
         default=1987,
         help="Index of the auction to analyze (default: 1987)",
     )
+    parser.add_argument(
+        "--outdir",
+        type=str,
+        default="auction_outputs",
+        help="Output directory for files"
+    )
     
     args = parser.parse_args()
+    outdir = pathlib.Path(args.outdir)
+    outdir.mkdir(parents=True, exist_ok=True)
 
     auction_start = args.auction_start
     auction_end = args.auction_end
@@ -114,6 +159,16 @@ def main():
     out = pathlib.Path(f"auction_snapshot_{auction_id}.json")
     out.write_text(json.dumps(payload, indent=2))
     print("Wrote", out)
+    
+    split_args = encode_selectWinners_args(solutions_batch_split[auction_id])
+    split_args_path = outdir / f"solutions_calldata_{auction_id}.bin"
+    split_args_path.write_bytes(split_args)
+    print("Wrote ARGS:", split_args_path, f"(len={len(split_args)})")
+    
+    winners_ref = encode_winners_reference(winners)
+    winners_bin_path = outdir / f"winners_python_{auction_id}.bin"
+    winners_bin_path.write_bytes(winners_ref)
+    print("Wrote REF:", winners_bin_path, f"(len={len(winners_ref)})")
     
     
 if __name__ == "__main__":
