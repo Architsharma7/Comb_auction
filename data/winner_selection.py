@@ -53,16 +53,10 @@ _S_TRADE = "(string,address,address,uint256)"
 _S_SOLUTION = f"(string,address,uint256,{_S_TRADE}[])"
 _S_SOLUTION_ARR = f"{_S_SOLUTION}[]"
     
-def encode_selectWinners_args(solutions) -> bytes:
+def encode_args(solutions) -> bytes:
     """ABI-encode ONLY the argument: (Solution[])"""
     abi_solutions = [solution_to_abi_tuple(s) for s in solutions]
     return encode([_S_SOLUTION_ARR], [abi_solutions])
-
-
-def encode_winners_reference(winners) -> bytes:
-    """ABI-encode reference (Solution[]) for Foundry test comparison"""
-    abi_winners = [solution_to_abi_tuple(s) for s in winners]
-    return encode([_S_SOLUTION_ARR], [abi_winners])
 
 
 def main():
@@ -160,12 +154,12 @@ def main():
     out.write_text(json.dumps(payload, indent=2))
     print("Wrote", out)
     
-    split_args = encode_selectWinners_args(solutions_batch_split[auction_id])
+    split_args = encode_args(solutions_batch_split[auction_id])
     split_args_path = outdir / f"solutions_calldata_{auction_id}.bin"
     split_args_path.write_bytes(split_args)
     print("Wrote ARGS:", split_args_path, f"(len={len(split_args)})")
     
-    winners_ref = encode_winners_reference(winners)
+    winners_ref = encode_args(winners)
     winners_bin_path = outdir / f"winners_python_{auction_id}.bin"
     winners_bin_path.write_bytes(winners_ref)
     print("Wrote REF:", winners_bin_path, f"(len={len(winners_ref)})")
