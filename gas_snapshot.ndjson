@@ -1,0 +1,11 @@
+{
+  "auction_id": 1987,
+  "contract": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+  "tx": "0x4a0bd87607861ded9b48eb2e390a3ff256895e2ce8bb426009c62e7c6cb8bc0e",
+  "selector": "b2fab989",
+  "calldata_len": 13348,
+  "zeros": 7936,
+  "nonzeros": 5412,
+  "gas_used": 442484,
+  "status": 1
+}

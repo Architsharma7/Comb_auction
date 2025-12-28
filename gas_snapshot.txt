@@ -1,0 +1,96 @@
+No files changed, compilation skipped
+
+Ran 1 test for test/SelectWinners_Benchmark.t.sol:SelectWinnersBenchmark
+[PASS] test_selectWinners_gas() (gas: 327911)
+Logs:
+  bin: ./data/auction_outputs/solutions_calldata_1987.bin
+  calldata_len: 13348
+
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 11.30ms (5.33ms CPU time)
+
+Ran 1 test for test/Combinatorial_auction.t.sol:CombinatorialAuctionTest
+[PASS] test_SelectWinners_matchesPython() (gas: 455675)
+Logs:
+  
+==== Solidity winners ====
+  count:
+  2
+  Solution:
+  1-0xc7899ff6a3ac2ff59261bd960a8c880df06e1041
+  solver:
+  0xC7899Ff6A3aC2FF59261bD960A8C880DF06E1041
+  score:
+  2652817984340384
+  trade id:
+  0xd1147d11652d2529756f0096a32bdc647200aee59633c2feb9a0c11614c1b08538a1ee03b1e458e097a3a93d18902c4ba410df2f67c30268
+  sell:
+  0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
+  buy:
+  0x6B175474E89094C44Da98b954EedeAC495271d0F
+  score:
+  2652817984340384
+  Solution:
+  0-0x008300082c3000009e63680088f8c7f4d3ff2e87-(('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'),)
+  solver:
+  0x008300082C3000009e63680088f8c7f4D3ff2E87
+  score:
+  105151602818231
+  trade id:
+  0xf5b6f98c95c5191d3168db063abe47171dedd8ae56392ef96753c197d288da0af08d4dea369c456d26a3168ff0024b904f2d8b9167c2fc9b
+  sell:
+  0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+  buy:
+  0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
+  score:
+  105151602818231
+  
+==== Python winners ====
+  count:
+  2
+  Solution:
+  1-0xc7899ff6a3ac2ff59261bd960a8c880df06e1041
+  solver:
+  0xC7899Ff6A3aC2FF59261bD960A8C880DF06E1041
+  score:
+  2652817984340384
+  tradeid:
+  0xd1147d11652d2529756f0096a32bdc647200aee59633c2feb9a0c11614c1b08538a1ee03b1e458e097a3a93d18902c4ba410df2f67c30268
+  sell:
+  0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
+  buy:
+  0x6B175474E89094C44Da98b954EedeAC495271d0F
+  score:
+  2652817984340384
+  Solution:
+  0-0x008300082c3000009e63680088f8c7f4d3ff2e87-(('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'),)
+  solver:
+  0x008300082C3000009e63680088f8c7f4D3ff2E87
+  score:
+  105151602818231
+  tradeid:
+  0xf5b6f98c95c5191d3168db063abe47171dedd8ae56392ef96753c197d288da0af08d4dea369c456d26a3168ff0024b904f2d8b9167c2fc9b
+  sell:
+  0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+  buy:
+  0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
+  score:
+  105151602818231
+
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 11.69ms (5.87ms CPU time)
+
+╭----------------------------------------------+-----------------+--------+--------+--------+---------╮
+| src/Combinatorial.sol:Combinatorial Contract |                 |        |        |        |         |
++=====================================================================================================+
+| Deployment Cost                              | Deployment Size |        |        |        |         |
+|----------------------------------------------+-----------------+--------+--------+--------+---------|
+| 846950                                       | 3696            |        |        |        |         |
+|----------------------------------------------+-----------------+--------+--------+--------+---------|
+|                                              |                 |        |        |        |         |
+|----------------------------------------------+-----------------+--------+--------+--------+---------|
+| Function Name                                | Min             | Avg    | Median | Max    | # Calls |
+|----------------------------------------------+-----------------+--------+--------+--------+---------|
+| selectWinners                                | 303148          | 303148 | 303148 | 303148 | 2       |
+╰----------------------------------------------+-----------------+--------+--------+--------+---------╯
+
+
+Ran 2 test suites in 19.69ms (22.99ms CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
