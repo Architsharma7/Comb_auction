@@ -1,7 +1,7 @@
 [project]
 name = "comb-auctions-onchain"
 version = "0.1.0"
-description = "Add your description here"
+description = ""
 requires-python = ">=3.13"
 dependencies = [
     "black>=25.1.0",
@@ -16,4 +16,8 @@ dependencies = [
     "eth-abi>=5.1.0",
     "eth-utils>=4.1.0",
     "eth-hash[pycryptodome]>=0.7.0",
+    "matplotlib>=3.9.0",
+    "seaborn>=0.13.0",
+    "pandas>=2.2.0",
+    "numpy>=2.0.0",
 ]

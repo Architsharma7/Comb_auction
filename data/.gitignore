@@ -2,3 +2,7 @@
 *.pickle
 .venv/
 __pycache__/
+auction_outputs/
+*.json
+*.bin
+*.jsonl

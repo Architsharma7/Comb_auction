@@ -3,11 +3,12 @@ src = "src"
 out = "out"
 libs = ["lib"]
 fs_permissions = [
-  { access = "read", path = "./data" }
+  { access = "read", path = "./data" },
+  { access = "read", path = "./data/auction_outputs" },
+  { access = "read", path = "./auction_outputs" }
 ]
 via_ir = true
 optimizer = true
 optimizer_runs = 200
 gas_reports = ["Combinatorial"]
-
-# See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
+gas_limit = "18446744073709551615"

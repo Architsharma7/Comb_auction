@@ -34,6 +34,21 @@ contract SelectWinnersBenchmark is Test {
         console2.log("calldata_len:", txData.length);
     }
 
+    function test_measureGas() public {
+        string memory binPath = vm.envString("RELATIVE_BIN_SOLUTIONS");
+        bytes memory rawArgs = vm.readFileBinary(binPath);
+        bytes memory txData = abi.encodePacked(SELECT_WINNERS_SEL, rawArgs);
+
+        uint256 gasBefore = gasleft();
+        (bool ok, ) = address(comb).call(txData);
+        uint256 gasExec = gasBefore - gasleft();
+
+        require(ok, "selectWinners failed");
+
+        console2.log("GAS_EXEC_USED:", gasExec);
+        console2.log("CALLDATA_LEN:", txData.length);
+    }
+
     function _envUint(string memory k) external view returns (uint256) {
         return vm.envUint(k);
     }
